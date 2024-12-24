@@ -1,18 +1,34 @@
-# Programa para exibir uma estrela de números de 5 pontas
+import math
 
-# Número de linhas da estrela
-n = 5
+# Configurações da estrela
+tamanho = 15  # Tamanho da estrela
 
-# Função para criar a linha de números
-def print_line(num):
-    print(' ' * (n - num), end='')   # Espaços antes dos números
-    print(' '.join(str(x) for x in range(1, num + 1)))  # Números crescentes
+# Gera as coordenadas da estrela
+def gerar_estrela(tamanho):
+    angulo_base = 2 * math.pi / 5  # Ângulo entre os pontos
+    pontos = []
+    for i in range(10):
+        raio = tamanho if i % 2 == 0 else tamanho / 2
+        angulo = i * angulo_base
+        x = raio * math.cos(angulo)
+        y = raio * math.sin(angulo)
+        pontos.append((x, y, (i // 2) + 1 if i % 2 == 0 else 0))  # Adiciona o número da ponta
+    return pontos
 
-# Parte superior da estrela
-for i in range(1, n + 1):
-    print_line(i)
+# Gera o desenho da estrela
+def desenhar_estrela(tamanho):
+    pontos = gerar_estrela(tamanho)
+    for y in range(-tamanho, tamanho + 1):
+        linha = ""
+        for x in range(-tamanho * 2, tamanho * 2 + 1):
+            dentro = " "
+            for px, py, numero in pontos:
+                if abs(x - px) < 1 and abs(y - py) < 1:
+                    dentro = str(numero) if numero > 0 else " "
+                    break
+            linha += dentro
+        print(linha)
 
-# Parte inferior da estrela
-for i in range(n - 1, 0, -1):
-    print_line(i)
+# Desenha a estrela
+desenhar_estrela(tamanho)
 input()
